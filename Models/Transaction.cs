@@ -7,7 +7,6 @@
         public DateTime Date { get; set; }
         public string? Type;
 
-        public Transaction() { }
         public Transaction(string? tittle, decimal amount, string? type)
         {
             Title = tittle;
