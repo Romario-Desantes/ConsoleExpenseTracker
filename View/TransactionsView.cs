@@ -6,6 +6,7 @@
         
         public void Run()
         {
+            _service.TransactionDeserealize();
             ShowMenu();
             while (true)
             {
@@ -79,6 +80,7 @@
             }
 
             _service.AddTransaction(title, amount, type);
+            _service.TransactionSerealize();
             Console.WriteLine("Транзакцію успішно додано!\n");
         }
 

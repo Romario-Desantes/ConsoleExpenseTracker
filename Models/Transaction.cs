@@ -7,9 +7,11 @@
         public DateTime Date { get; set; }
         public string? Type;
 
-        public Transaction(string? tittle, decimal amount, string? type)
+        public Transaction() { }
+
+        public Transaction(string? title, decimal amount, string? type)
         {
-            Title = tittle;
+            Title = title;
             Amount = amount;
             Date = DateTime.Now;
             Type = type;
