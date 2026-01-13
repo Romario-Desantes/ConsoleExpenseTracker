@@ -6,7 +6,7 @@
         
         public void Run()
         {
-            _service.TransactionDeserealize();
+            _service.LoadFromFile();
             ShowMenu();
             while (true)
             {
@@ -27,6 +27,7 @@
                             ShowBalanceView();
                             break;
                         case 4:
+                            _service.SaveToFile();
                             Console.WriteLine("До побачення.");
                             return;
                         default:
@@ -62,15 +63,20 @@
                 Console.Write("Некоректна сума. Спробуйте ще раз: ");
             }
 
-            Console.Write("Введіть тип транзакції (Income/Expense): ");
-            string type = string.Empty;
+            Console.Write("Введіть тип транзакції (1 - Income / 2- Expense): ");
+            TransactionType type = TransactionType.Income;
             bool typeBoolean = true;
             while (typeBoolean)
             {
                 string? typeOfTransaction = Console.ReadLine();
-                if (typeOfTransaction!.ToLower() == "income" || typeOfTransaction.ToLower() == "expense")
+                if (typeOfTransaction == "1")
                 {
-                    type = typeOfTransaction.ToUpper();
+                    type = TransactionType.Income;
+                    typeBoolean = false;
+                }
+                else if (typeOfTransaction == "2")
+                {
+                    type = TransactionType.Expense;
                     typeBoolean = false;
                 }
                 else
@@ -80,7 +86,6 @@
             }
 
             _service.AddTransaction(title, amount, type);
-            _service.TransactionSerealize();
             Console.WriteLine("Транзакцію успішно додано!\n");
         }
 
