@@ -68,8 +68,9 @@
                 Console.Write("Некоректна сума. Спробуйте ще раз: ");
             }
 
-            Console.Write("Введіть тип транзакції (1 - Income / 2 - Expense): ");
+            Console.Write("Введіть тип транзакції (1 - Прибуток / 2 - Витрата): ");
             TransactionType type = TransactionType.Income;
+            TransactionCategory category = TransactionCategory.Other;
             bool typeBoolean = true;
             while (typeBoolean)
             {
@@ -77,11 +78,46 @@
                 if (typeOfTransaction == "1")
                 {
                     type = TransactionType.Income;
-                    typeBoolean = false;
+                    Console.Write("Який саме прибуток (1 - Зарплата / 2 - Подарунок): ");
+                    while(true)
+                    {
+                        string? categoryInput = Console.ReadLine();
+                        if (categoryInput == "1" )
+                        {
+                            category = TransactionCategory.Salary;
+                            typeBoolean = false;
+                            break;
+                        }
+                        else if(categoryInput == "2")
+                        {
+                            category = TransactionCategory.Present;
+                            typeBoolean = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.Write("Данні введено не коректно, спробуйте ще раз: ");
+                        }
+                    }
                 }
                 else if (typeOfTransaction == "2")
                 {
                     type = TransactionType.Expense;
+                    Console.Write("На що витрачаються кошти (1 - Їжа / 2 - Транспорт / Будь-яка інша клавіша - Інше): ");
+                    string? categoryInput = Console.ReadLine();
+                    
+                    if (categoryInput == "1")
+                    {
+                        category = TransactionCategory.Food;
+                    }
+                    else if (categoryInput == "2")
+                    {
+                        category = TransactionCategory.Transport;
+                    }
+                    else
+                    {
+                        category = TransactionCategory.Other;
+                    }
                     typeBoolean = false;
                 }
                 else
@@ -90,7 +126,7 @@
                 }
             }
 
-            _service.AddTransaction(title, amount, type);
+            _service.AddTransaction(title, amount, type, category);
             Console.WriteLine("Транзакцію успішно додано!\n");
         }
 
@@ -106,7 +142,7 @@
 
             foreach (var t in transactions)
             {
-                Console.WriteLine($"{t.Id}. {t.Title} | {t.Amount} | {t.Type} | {t.Date}");
+                Console.WriteLine($"{t.Id}. {t.Title} | {t.Amount} | {t.Type} | {t.Category} | {t.Date}");
             }
             Console.WriteLine();
         }

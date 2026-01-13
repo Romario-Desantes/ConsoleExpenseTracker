@@ -6,11 +6,11 @@ namespace ConsoleExpenseTracker
     {
         private List<Transaction> _transactions = new List<Transaction>();
 
-        public void AddTransaction(string? title, decimal amount, TransactionType type)
+        public void AddTransaction(string? title, decimal amount, TransactionType type, TransactionCategory category)
         {
             int newId = _transactions.Any() ? _transactions.Max(t => t.Id) + 1 : 1;
 
-            _transactions.Add(new Transaction(newId, title, amount, type));
+            _transactions.Add(new Transaction(newId, title, amount, type, category));
         }
 
         public void RemoveTransactionByID(int id) 
