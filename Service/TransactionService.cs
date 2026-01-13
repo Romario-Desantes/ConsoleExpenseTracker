@@ -59,5 +59,14 @@ namespace ConsoleExpenseTracker
                 _transactions = new List<Transaction>();
             }
         }
+
+        public List<Transaction> FindByName(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return new List<Transaction>();
+
+            var transaction = _transactions.FindAll(t => t.Title != null && t.Title.Contains(input)).OrderBy(t => t.Id).ToList();
+            return transaction;
+        }
     }
 }

@@ -28,9 +28,12 @@
                             ShowRemoveTransactionView();
                             break;
                         case 4:
-                            ShowBalanceView();
+                            ShowFoundTransactionView();
                             break;
                         case 5:
+                            ShowBalanceView();
+                            break;
+                        case 6:
                             _service.SaveToFile();
                             Console.WriteLine("До побачення.");
                             return;
@@ -51,8 +54,9 @@
             Console.WriteLine("1. Додати транзакцію.");
             Console.WriteLine("2. Показати список.");
             Console.WriteLine("3. Видалити транзакцію.");
-            Console.WriteLine("4. Баланс.");
-            Console.WriteLine("5. Вихід.");
+            Console.WriteLine("4. Знайти транзакцію за назвою.");
+            Console.WriteLine("5. Баланс.");
+            Console.WriteLine("6. Вихід.");
             Console.WriteLine();
         }
 
@@ -166,6 +170,27 @@
             else
             {
                 Console.WriteLine("Некоректний ID. Спробуйте ще раз.\n");
+            }
+        }
+
+        private void ShowFoundTransactionView() 
+        {
+            Console.Write("Введіть назву транзакції для її пошуку: ");
+            string? userInput = Console.ReadLine();
+
+            var foundTransactions = _service.FindByName(userInput!);
+
+            if (foundTransactions.Count > 0)
+            {
+                foreach (var t in foundTransactions)
+                {
+                    Console.WriteLine($"{t.Id}. {t.Title} | {t.Amount} | {t.Type} | {t.Category} | {t.Date}");
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Транзакцій з такою назвою не знайдено!\n");
             }
         }
     }
