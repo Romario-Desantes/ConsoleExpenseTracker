@@ -8,7 +8,18 @@ namespace ConsoleExpenseTracker
 
         public void AddTransaction(string? title, decimal amount, TransactionType type)
         {
-            _transactions.Add(new Transaction(title, amount, type));
+            int newId = _transactions.Any() ? _transactions.Max(t => t.Id) + 1 : 1;
+
+            _transactions.Add(new Transaction(newId, title, amount, type));
+        }
+
+        public void RemoveTransactionByID(int id) 
+        {
+            var transaction = _transactions.FirstOrDefault(t => t.Id == id);
+            if (transaction != null)
+            {
+                _transactions.Remove(transaction);
+            }
         }
 
         public List<Transaction> GetAllTransactions()

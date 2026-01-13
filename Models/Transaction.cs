@@ -8,6 +8,7 @@
 
     public class Transaction
     {
+        public int Id { get; set; }
         public string? Title { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
@@ -15,8 +16,9 @@
 
         public Transaction() { }
 
-        public Transaction(string? title, decimal amount, TransactionType type)
+        public Transaction(int id, string? title, decimal amount, TransactionType type)
         {
+            Id = id;
             Title = title;
             Amount = amount;
             Date = DateTime.Now;

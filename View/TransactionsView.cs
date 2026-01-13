@@ -8,6 +8,7 @@
         {
             _service.LoadFromFile();
             ShowMenu();
+
             while (true)
             {
                 Console.Write("Введіть номер функції: ");
@@ -24,9 +25,12 @@
                             ShowTransactionsView();
                             break;
                         case 3:
-                            ShowBalanceView();
+                            ShowRemoveTransactionView();
                             break;
                         case 4:
+                            ShowBalanceView();
+                            break;
+                        case 5:
                             _service.SaveToFile();
                             Console.WriteLine("До побачення.");
                             return;
@@ -46,8 +50,9 @@
         {
             Console.WriteLine("1. Додати транзакцію.");
             Console.WriteLine("2. Показати список.");
-            Console.WriteLine("3. Баланс.");
-            Console.WriteLine("4. Вихід.");
+            Console.WriteLine("3. Видалити транзакцію.");
+            Console.WriteLine("4. Баланс.");
+            Console.WriteLine("5. Вихід.");
             Console.WriteLine();
         }
 
@@ -63,7 +68,7 @@
                 Console.Write("Некоректна сума. Спробуйте ще раз: ");
             }
 
-            Console.Write("Введіть тип транзакції (1 - Income / 2- Expense): ");
+            Console.Write("Введіть тип транзакції (1 - Income / 2 - Expense): ");
             TransactionType type = TransactionType.Income;
             bool typeBoolean = true;
             while (typeBoolean)
@@ -99,11 +104,9 @@
                 return;
             }
 
-            int id = 1;
             foreach (var t in transactions)
             {
-                Console.WriteLine($"{id}. {t.Title} | {t.Amount} | {t.Type} | {t.Date}");
-                id++;
+                Console.WriteLine($"{t.Id}. {t.Title} | {t.Amount} | {t.Type} | {t.Date}");
             }
             Console.WriteLine();
         }
@@ -112,6 +115,22 @@
         {
             decimal balance = _service.CountBalance();
             Console.WriteLine($"Поточний баланс: {balance}\n");
+        }
+
+        private void ShowRemoveTransactionView() 
+        {
+            Console.Write("Введіть ID транзакції для видалення: ");
+            string? userInput = Console.ReadLine();
+
+            if (int.TryParse(userInput, out int id) && _service.GetAllTransactions().Any(t => t.Id == id))
+            {
+                _service.RemoveTransactionByID(id);
+                Console.WriteLine("Транзакцію успішно видалено!\n");
+            }
+            else
+            {
+                Console.WriteLine("Некоректний ID. Спробуйте ще раз.\n");
+            }
         }
     }
 }
