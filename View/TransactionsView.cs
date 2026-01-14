@@ -34,6 +34,9 @@
                             ShowBalanceView();
                             break;
                         case 6:
+                            ShowAnalyzeView();
+                            break;
+                        case 7:
                             _service.SaveToFile();
                             Console.WriteLine("До побачення.");
                             return;
@@ -56,7 +59,8 @@
             Console.WriteLine("3. Видалити транзакцію.");
             Console.WriteLine("4. Знайти транзакцію за назвою.");
             Console.WriteLine("5. Баланс.");
-            Console.WriteLine("6. Вихід.");
+            Console.WriteLine("6. Аналітика витрат.");
+            Console.WriteLine("7. Вихід.");
             Console.WriteLine();
         }
 
@@ -191,6 +195,24 @@
             else
             {
                 Console.WriteLine("Транзакцій з такою назвою не знайдено!\n");
+            }
+        }
+
+        private void ShowAnalyzeView()
+        {
+            Console.WriteLine("Аналітика витрат:");
+
+            var analyzeByExpense = _service.AnalyzeByExpenseCategory();
+
+            if(analyzeByExpense.Count > 0)
+            {
+                foreach(var t in analyzeByExpense)
+                    Console.WriteLine($"{t.Key}: {t.Value}");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Витрат не знайдено!");
             }
         }
     }

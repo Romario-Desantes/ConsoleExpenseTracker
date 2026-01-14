@@ -65,8 +65,19 @@ namespace ConsoleExpenseTracker
             if (string.IsNullOrEmpty(input))
                 return new List<Transaction>();
 
-            var transaction = _transactions.FindAll(t => t.Title != null && t.Title.Contains(input)).OrderBy(t => t.Id).ToList();
+            var transaction = _transactions.FindAll(t => t.Title != null && t.Title.Contains(input, StringComparison.OrdinalIgnoreCase)).OrderBy(t => t.Id).ToList();
             return transaction;
+        }
+
+        public Dictionary<TransactionCategory, decimal> AnalyzeByExpenseCategory() 
+        {
+            return _transactions
+                    .Where(t => t.Type == TransactionType.Expense)
+                    .GroupBy(t => t.Category)
+                    .ToDictionary(
+                        g => g.Key,                
+                        g => g.Sum(t => t.Amount)  
+                    );
         }
     }
 }
